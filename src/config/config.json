@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "cab_on_way",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "cab_on_way",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "admin",
+    "password": "Cabonway20",
+    "database": "cab_on_way",
+    "host": "cabonwaydb.c38ma82a22m1.ap-south-1.rds.amazonaws.com",
+    "dialect": "mysql"
+  }
+}
