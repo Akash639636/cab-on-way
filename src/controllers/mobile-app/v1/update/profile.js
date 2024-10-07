@@ -32,7 +32,6 @@ const updateProfile = async (req, res) => {
     }
 }
 
-
 updateRouter.put('/app/v1/user/profile',
     userAppAuthMiddleware(),
     validate([
