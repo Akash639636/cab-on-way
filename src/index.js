@@ -10,8 +10,8 @@ requireDir('./routes');
 app.use(function (err, req, res, next) {
     res.json(error(err.message));
 });
-const server = app.listen(process.env.POST,async () => {
-    console.log(`app is listening on port: ${process.env.POST} `)
+const server = app.listen(process.env.PORT,async () => {
+    console.log(`app is listening on port: ${process.env.PORT} `)
 })
 
 
