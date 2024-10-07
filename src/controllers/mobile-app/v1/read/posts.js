@@ -24,7 +24,7 @@ const createPost = async (req, res) => {
 
         let posts = await Post.findAll({
             where,
-            attributes: ['id', 'title', 'description', 'attachment'],
+            attributes: ['id', 'title', 'description', 'attachments'],
             include: [{
                 model: User,
                 as: 'user',
