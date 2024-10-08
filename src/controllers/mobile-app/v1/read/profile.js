@@ -1,7 +1,6 @@
 const { retrieveRouter} = require('../../../../routes/apiRouter')
 const {validate} = require('../../../../helpers/validations');
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
-const {query} = require("express-validator");
 const {User} = require("../../../../models");
 const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
 

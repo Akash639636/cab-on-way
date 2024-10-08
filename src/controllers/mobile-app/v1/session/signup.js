@@ -7,8 +7,8 @@ const {generateBcrypt} = require("../../../../helpers/bcrypt");
 
 
 const createUser = async (req, res) => {
-    const {mobile, password, name, email} = req.body;
     try {
+        const {mobile, password, name, email} = req.body;
         const OTP = 1234;
 
         let user = await User.findOne({
@@ -24,7 +24,7 @@ const createUser = async (req, res) => {
             name,
             email,
             isVerified: false,
-            isActive: false
+            isActive: true
         });
 
         await Otp.create({

@@ -7,7 +7,7 @@ const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware")
 const {Op} = require('sequelize');
 
 
-const createPost = async (req, res) => {
+const retrievePosts = async (req, res) => {
     try {
         const {limit, page, search} = req.query;
 
@@ -50,4 +50,4 @@ retrieveRouter.get('/app/v1/user/posts',
         query('page').notEmpty().withMessage('page is required'),
     ]),
     userAppAuthMiddleware(),
-    wrapRequestHandler(createPost))
+    wrapRequestHandler(retrievePosts))

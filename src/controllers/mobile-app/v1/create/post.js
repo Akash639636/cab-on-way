@@ -4,20 +4,29 @@ const {wrapRequestHandler, error, success} = require('../../../../helpers/respon
 const {query, body} = require("express-validator");
 const {Post} = require("../../../../models");
 const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
+const {fileValidation, fileUpload, multiFileUpload} = require("../../../../helpers/fileUpload");
 
 
 const createPost = async (req, res) => {
     try {
         const {id} = req.response.user;
         const {title, description} = req.body;
+        const attachments = req.files;
+        const acceptedSize = 100000;
+        const acceptedFileTypes = ['image/jpeg'];
 
-        let post = await Post.create({
+
+        const uploadResponse = await multiFileUpload(attachments, 'uploads/post-attachments', acceptedSize, acceptedFileTypes)
+        if (!uploadResponse.success) return res.status(415).json(error(uploadResponse.errorMessage));
+
+        const post = await Post.create({
             userId: id,
             title,
-            description
+            description,
+            attachments: JSON.stringify(uploadResponse.fileNames)
         });
 
-        return res.status(200).json(success('', {post}));
+        return res.status(200).json(success('', {post: post}));
 
     } catch (e) {
         return res.status(500).json(error(e));
