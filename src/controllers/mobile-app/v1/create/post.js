@@ -26,10 +26,17 @@ const createPost = async (req, res) => {
             attachments: JSON.stringify(uploadResponse.fileNames)
         });
 
+        if (global.postCount > 2){
+            global.io.emit("reload", "reload to see new post");
+            global.postCount = 0;
+        }else{
+            global.postCount +=1;
+        }
+
         return res.status(200).json(success('', {post: post}));
 
     } catch (e) {
-        return res.status(500).json(error(e));
+        return res.status(500).json(error(e.message));
     }
 }
 

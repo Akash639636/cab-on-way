@@ -4,7 +4,8 @@
     "password": "123AaA@22",
     "database": "u133157938_cabonwayfinal",
     "host": "srv1500.hstgr.io",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
@@ -18,6 +19,7 @@
     "password": "123AaA@22",
     "database": "u133157938_cabonwayfinal",
     "host": "srv1500.hstgr.io",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }
