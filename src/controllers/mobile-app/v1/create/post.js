@@ -26,7 +26,7 @@ const createPost = async (req, res) => {
             attachments: JSON.stringify(uploadResponse.fileNames)
         });
 
-        if (global.postCount > 2){
+        if (global.postCount == 0){
             global.io.emit("reload", "reload to see new post");
             global.postCount = 0;
         }else{
