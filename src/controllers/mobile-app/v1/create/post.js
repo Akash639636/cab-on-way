@@ -1,10 +1,10 @@
 const {createRouter} = require('../../../../routes/apiRouter')
 const {validate} = require('../../../../helpers/validations');
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
-const {query, body} = require("express-validator");
+const {body} = require("express-validator");
 const {Post} = require("../../../../models");
 const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
-const {fileValidation, fileUpload, multiFileUpload} = require("../../../../helpers/fileUpload");
+const {multiFileUpload} = require("../../../../helpers/fileUpload");
 
 
 const createPost = async (req, res) => {

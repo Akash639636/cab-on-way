@@ -1,4 +1,4 @@
-const {createRouter, retrieveRouter} = require('../../../../routes/apiRouter')
+const { retrieveRouter} = require('../../../../routes/apiRouter')
 const {validate} = require('../../../../helpers/validations');
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
 const {query} = require("express-validator");
@@ -9,9 +9,11 @@ const {Op} = require('sequelize');
 
 const retrievePosts = async (req, res) => {
     try {
-        const {limit, page, search} = req.query;
+        const {limit, page, search, postByUserId} = req.query;
+        const {id} = req.response.user;
 
         let where = {};
+
 
         if (search) {
             where = {
@@ -22,13 +24,23 @@ const retrievePosts = async (req, res) => {
             }
         }
 
-        let posts = await Post.findAll({
+        let userWhere = {}
+
+        if (postByUserId){
+            userWhere = {
+                ...userWhere,
+                id
+            }
+        }
+
+        const posts = await Post.findAll({
             where,
             attributes: ['id', 'title', 'description', 'attachments'],
             include: [{
                 model: User,
                 as: 'user',
                 attributes: ['id', 'name', 'profileImage'],
+                where: userWhere
             }],
             limit: +limit,
             offset: page * limit,
