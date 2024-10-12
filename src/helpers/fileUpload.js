@@ -49,7 +49,8 @@ const multiFileUpload = async (files, directoryName, acceptedSize = 500000, acce
         return {fileNames, success: true, errorMessage: ''};
 
     } catch (e) {
-        return {success: false, errorMessage: 'unable to upload files'};
+
+        return {success: false, errorMessage: e.message};
     }
 }
 
