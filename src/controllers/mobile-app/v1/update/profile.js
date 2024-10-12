@@ -17,7 +17,7 @@ const updateProfile = async (req, res) => {
         });
 
         if (files?.profileImage) {
-            const acceptedTypes =  ['image/jpeg'];
+            const acceptedTypes =  ['image/jpeg', 'image/jpg', 'image/png'];
             const {fileName, extension, errorMessage , success} = await fileUpload(files.profileImage, 'uploads/user-profile', 500000,  acceptedTypes);
             if (!success)  return res.status(415).json(error(errorMessage));
             user.profileImage = fileName + extension;

@@ -12,8 +12,8 @@ const createPost = async (req, res) => {
         const {id} = req.response.user;
         const {title, description} = req.body;
         const attachments = req.files;
-        const acceptedSize = 100000;
-        const acceptedFileTypes = ['image/jpeg'];
+        const acceptedSize = 500000;
+        const acceptedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 
         const uploadResponse = await multiFileUpload(attachments, 'uploads/post-attachments', acceptedSize, acceptedFileTypes)
