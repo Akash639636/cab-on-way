@@ -14,7 +14,7 @@ const adminLogin = async (req, res) => {
 
         let user = await AdminUser.findOne({where: {mobile}});
 
-        if (!user) return res.status(404).json(error('Username or password is incorrect'));
+        if (!user) return res.status(404).json(error('Phone Number or password is incorrect'));
 
         if (compareBcrypt(password, user.password)) {
 
@@ -39,7 +39,7 @@ const adminLogin = async (req, res) => {
                 }
             }));
         } else {
-            res.status(401).json(error('Username or password is incorrect'))
+            res.status(401).json(error('Phone Number or password is incorrect'))
         }
 
 

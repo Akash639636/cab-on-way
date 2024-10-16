@@ -29,8 +29,8 @@ const retrieveUsers = async (req, res) => {
             offset: page * limit,
             order: [['id', 'DESC']]
         });
-
-        return res.status(200).json(success('', {users}));
+        const totalRecords = await User.count();
+        return res.status(200).json(success('', {users, totalRecords}));
 
     } catch (e) {
         return res.status(500).json(error(e));

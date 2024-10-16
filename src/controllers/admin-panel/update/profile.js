@@ -19,7 +19,7 @@ const updateProfile = async (req, res) => {
         user.mobile = mobile;
         user.email = email;
         user.save();
-        return res.status(200).json(success('', {user}));
+        return res.status(200).json(success('Profile updated successfully', {user}));
     } catch (e) {
         return res.status(500).json(error(e.message));
     }
