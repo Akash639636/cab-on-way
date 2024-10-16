@@ -1,18 +1,18 @@
 const {createRouter} = require('../../../../routes/apiRouter')
-const {validate} = require('../../../../helpers/validations');
+// const {validate} = require('../../../../helpers/validations');
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
-const {body} = require("express-validator");
+// const {body} = require("express-validator");
 const {UsersSubscription} = require("../../../../models");
-const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
-const {multiFileUpload} = require("../../../../helpers/fileUpload");
-const axios = require("axios");
-const crypto = require('crypto');
-const sha256 = require('sha256');
+// const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
+// const {multiFileUpload} = require("../../../../helpers/fileUpload");
+// const axios = require("axios");
+// const crypto = require('crypto');
+// const sha256 = require('sha256');
 
 
 
 
-const createPost = async (req, res) => {
+const createSubscription = async (req, res) => {
     try {
 
         // const REQUEST_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
@@ -71,7 +71,7 @@ const createPost = async (req, res) => {
         });
 
 
-        return res.status(200).json(success('', {post: {}}));
+        return res.status(200).json(success(''));
 
     } catch (e) {
         return res.status(500).json(error(e.message));
@@ -80,4 +80,4 @@ const createPost = async (req, res) => {
 
 
 createRouter.post('/app/v1/user/subscription',
-    wrapRequestHandler(createPost))
+    wrapRequestHandler(createSubscription))
