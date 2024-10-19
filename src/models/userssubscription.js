@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   UsersSubscription.init({
     userId: DataTypes.INTEGER,
-    paymentId: DataTypes.STRING,
+    amount: DataTypes.STRING,
+    transactionId: DataTypes.STRING,
     paymentStatus: DataTypes.STRING,
     isActive: DataTypes.BOOLEAN,
     expiredOn: DataTypes.STRING

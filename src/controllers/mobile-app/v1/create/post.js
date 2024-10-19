@@ -33,7 +33,7 @@ const createPost = async (req, res) => {
             global.postCount +=1;
         }
 
-        return res.status(200).json(success('', {post: post}));
+        return res.status(200).json(success('Post created.', {post: post}));
 
     } catch (e) {
         return res.status(500).json(error(e.message));

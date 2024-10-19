@@ -12,7 +12,10 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      paymentId: {
+      transactionId: {
+        type: Sequelize.STRING
+      },
+      amount: {
         type: Sequelize.STRING
       },
       paymentStatus: {
