@@ -42,8 +42,8 @@ const retrievePosts = async (req, res) => {
                 attributes: ['id', 'name', 'profileImage'],
                 where: userWhere
             }],
-            limit: +limit,
-            offset: page * limit,
+            // limit: +limit,
+            // offset: page * limit,
             order: [['id', 'DESC']]
         });
 

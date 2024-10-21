@@ -3,6 +3,7 @@ const { app } = require('./app');
 const { error } = require('./helpers/response');
 const {Server} = require("socket.io");
 const {socketInit} = require("./socket");
+const updateSubscriptionStatusCronJob = require('./cron-jobs/updateSubscriptionStatus')
 require('../src/models');
 require('dotenv').config();
 
@@ -14,6 +15,7 @@ app.use(function (err, req, res, next) {
 });
 const server = app.listen(process.env.PORT,async () => {
     console.log(`app is listening on port: ${process.env.PORT} `);
+    updateSubscriptionStatusCronJob();
 })
 
 

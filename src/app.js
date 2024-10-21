@@ -6,7 +6,7 @@ const cors = require('cors');
 
 app.use(cors({
     origin: [
-        "http://localhost:3000",
+        "http://localhost:4173",
         "http://localhost:5173",
         "https://cab-on-way-react-admin.onrender.com"
     ]
