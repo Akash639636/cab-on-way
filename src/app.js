@@ -17,7 +17,8 @@ app.use(FileUpload({
 
 app.use(express.json());
 app.use(express.static("assets"));
-
+app.set("views", "./src/views");
+app.set("view engine", "ejs");
 
 
 module.exports = { app };

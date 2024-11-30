@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        border: 3px solid;
+        border-color: #FFF #FFF transparent transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+
+    .loader::after,
+    .loader::before {
+        content: '';
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border: 3px solid;
+        border-color: transparent transparent #FF3D00 #FF3D00;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: rotationBack 0.5s linear infinite;
+        transform-origin: center center;
+    }
+
+    .loader::before {
+        width: 32px;
+        height: 32px;
+        border-color: #FFF #FFF transparent transparent;
+        animation: rotation 1.5s linear infinite;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes rotationBack {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        min-width: 100vw;
+        height: 100vh;
+        flex-wrap: wrap;
+    }
+    .messageTitle {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .messageDescription {
+        font-size: 18px;
+        color: #555;
+    }
+    .lottie-cont{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+<body>
+<div class="container">
+    <span class="loader"></span>
+
+    <div>
+        <div class="lottie-cont" id='successLottie' style="display: none">
+            <dotlottie-player
+                               src="https://lottie.host/a7d41262-4717-423a-8c56-8f97c887f053/BK5NbGjzR0.lottie"
+                               background="transparent" speed="1" style="width: 300px; height: 300px;"
+                               autoplay></dotlottie-player>
+            <div style="text-align: center">
+                <div class="messageTitle">Your payment was successful!</div>
+                <div class="messageDescription">Please <strong>relaunch</strong> the mobile application to continue.</div>
+            </div>
+
+        </div>
+
+        <div class="lottie-cont" id='errorLottie' style="display: flex">
+            <dotlottie-player  src="https://lottie.host/9046fa69-6069-4f5c-a3ce-45c374183347/520JR6Gq1p.lottie" background="transparent" speed="1" style="width: 300px; height: 300px; display: flex" autoplay></dotlottie-player>
+            <div style="text-align: center">
+                <div class="messageTitle">Your payment could not be processed.</div>
+                <div class="messageDescription">Please <strong>relaunch</strong> the mobile application and try again.</div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+<script>
+    let query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+    console.log(query)
+    const loader = document.querySelector('.loader');
+
+    fetch('https://cab-on-way.onrender.com/api/v1/user/payment-verification', {
+        method: "post",
+        body: query
+    }).then((res) => res.json())
+        .then((data) => {
+            loader.style.display = 'none';
+
+            if (data.data.code == 'PAYMENT_SUCCESS') {
+                document.querySelector('#successLottie').style.display = 'flex';
+            } else {
+                document.querySelector('#errorLottie').style.display = 'flex';
+            }
+        }).catch((e) => {
+        loader.style.display = 'none';
+    })
+</script>
+
+</html>

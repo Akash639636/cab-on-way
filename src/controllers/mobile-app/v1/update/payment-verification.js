@@ -46,7 +46,7 @@ const retrieve = async (req, res) => {
         }
 
         await UsersSubscription.create(subscriptionObject);
-        return res.status(200).json(success('', {}));
+        return res.status(200).json(success('', {status: data.code}));
 
     } catch (e) {
         console.log(e.message);

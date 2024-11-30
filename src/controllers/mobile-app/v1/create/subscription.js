@@ -1,13 +1,15 @@
 const {createRouter} = require('../../../../routes/apiRouter')
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
 const {UsersSubscription} = require("../../../../models");
-
+const {body} = require("express-validator");
+const {validate} = require("../../../../helpers/validations");
 
 
 const createSubscription = async (req, res) => {
     try {
-        const {id} = res.response;
-        const subscription = await  UsersSubscription.create({
+        // const {id} = res.response;
+        const {id} = req.body
+        const subscription = await UsersSubscription.create({
             userId: id,
             paymentStatus: 'pending',
             isActive: false
@@ -21,4 +23,7 @@ const createSubscription = async (req, res) => {
 
 
 createRouter.post('/app/v1/user/subscription',
+    validate([
+        body('id').notEmpty().withMessage('ID is required'),
+    ]),
     wrapRequestHandler(createSubscription))
