@@ -133,7 +133,7 @@
 
     fetch('https://cab-on-way.onrender.com/api/app/v1/user/payment-verification', {
         method: "post",
-        body: query
+        body: JSON.stringify(query)
     }).then((res) => res.json())
         .then((data) => {
             loader.style.display = 'none';
