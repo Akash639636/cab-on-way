@@ -8,7 +8,8 @@ app.use(cors({
     origin: [
         "http://localhost:4173",
         "http://localhost:5173",
-        "https://cab-on-way-react-admin.onrender.com"
+        "https://cab-on-way-react-admin.onrender.com",
+        "https://becoming-newly-thrush.ngrok-free.app"
     ]
 }))
 app.use(FileUpload({

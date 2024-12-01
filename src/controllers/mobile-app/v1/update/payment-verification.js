@@ -13,7 +13,7 @@ const {router} = require("express/lib/application");
 const retrieve = async (req, res) => {
     try {
         const {id} = req.query;
-        console.log(id)
+        console.log(req.query)
         const decodedResponse = Base64.decode(req.body.response);
         const {data: {merchantId, merchantTransactionId}} = JSON.parse(decodedResponse);
         const verificationUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`;
