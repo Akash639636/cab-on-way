@@ -1,23 +1,22 @@
-const {retrieveRouter, apiRouter} = require('../../../../routes/apiRouter')
+const {apiRouter} = require('../../../../routes/apiRouter')
 const {validate} = require('../../../../helpers/validations');
 const {wrapRequestHandler, error, success} = require('../../../../helpers/response')
-const {User, UsersSubscription} = require("../../../../models");
-const {userAppAuthMiddleware} = require("../../../../middleware/authMiddleware");
-const Base64 = require("base-64");
+const {UsersSubscription} = require("../../../../models");
 const crypto = require("crypto");
 const axios = require("axios");
 const dayjs = require('dayjs');
-const {router} = require("express/lib/application");
+const {body} = require("express-validator");
 
 
 const retrieve = async (req, res) => {
     try {
-        const {id} = req.query;
-        console.log(req.query)
-        const decodedResponse = Base64.decode(req.body.response);
-        const {data: {merchantId, merchantTransactionId}} = JSON.parse(decodedResponse);
-        const verificationUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`;
-        const checksum = crypto.createHash('sha256').update(`/pg/v1/status/${merchantId}/${merchantTransactionId}` + process.env.SALT_KEY).digest('hex') + "###" + process.env.SALT_INDEX;
+        const {mtxnId} = req.body;
+
+        const userSub = await UsersSubscription.findOne({where: {merchantTransactionId: mtxnId, paymentStatus: 'pending'}});
+        if (!userSub) return res.status(422).json(error('Invalid Data'));
+
+        const verificationUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.MERCHANT_ID}/${mtxnId}`;
+        const checksum = crypto.createHash('sha256').update(`/pg/v1/status/${process.env.MERCHANT_ID}/${mtxnId}` + process.env.SALT_KEY).digest('hex') + "###" + process.env.SALT_INDEX;
 
         const options = {
             method: 'GET',
@@ -25,35 +24,31 @@ const retrieve = async (req, res) => {
             headers: {
                 'X-VERIFY': checksum,
                 'Content-Type': 'application/json',
-                'X-MERCHANT-ID': merchantId,
+                'X-MERCHANT-ID': process.env.MERCHANT_ID,
             }
         }
 
         const {data} = await axios.request(options);
 
-        let subscriptionObject = {
-            userId: id,
-            paymentStatus: data.code,
-            subscriptionStatus: 'inactive',
-            isActive: false
-        };
-        if (data.code === "PAYMENT_SUCCESS") {
-            subscriptionObject.isActive = true;
-            subscriptionObject.subscriptionStatus = 'active';
-            subscriptionObject.transactionId = data.data.transactionId;
-            subscriptionObject.expiredOn = dayjs().add(1, 'month').format('YYYY-MM-DD');
-            subscriptionObject.amount = data.data.amount;
-        }
 
-        await UsersSubscription.create(subscriptionObject);
-        return res.status(200).json(success('', {status: data.code}));
+        if (data.code === "PAYMENT_SUCCESS") {
+            userSub.isActive = true;
+            userSub.subscriptionStatus = 'active';
+            userSub.transactionId = data.data.transactionId;
+            userSub.expiredOn = dayjs().add(1, 'month').format('YYYY-MM-DD');
+            userSub.amount = data.data.amount * 1000;
+            userSub.paymentStatus = 'success';
+            userSub.save();
+        }
+        return res.status(200).json(success('', {status: data.data.state}));
 
     } catch (e) {
-        console.log(e.message);
         return res.status(500).json(error(e.message));
     }
 }
 
 
-apiRouter.post('/app/v1/user/payment-verification',
+apiRouter.post('/app/v1/user/payment-verification', validate([
+        body('mtxnId').notEmpty().withMessage('mtxnId is required'),
+    ]),
     wrapRequestHandler(retrieve))

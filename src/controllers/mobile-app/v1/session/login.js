@@ -26,7 +26,7 @@ const Login = async (req, res) => {
 
             return res.status(200).json(success('login successfully', {user, token}));
         } else {
-            res.status(401).json(error('Username or password is incorrect'))
+            res.status(400).json(error('Username or password is incorrect'))
         }
 
 

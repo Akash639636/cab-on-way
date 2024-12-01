@@ -15,6 +15,9 @@ module.exports = {
       transactionId: {
         type: Sequelize.STRING
       },
+      merchantTransactionId: {
+        type: Sequelize.STRING
+      },
       amount: {
         type: Sequelize.STRING
       },

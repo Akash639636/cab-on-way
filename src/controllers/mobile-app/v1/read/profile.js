@@ -21,6 +21,5 @@ const retrieveProfile = async (req, res) => {
 }
 
 
-retrieveRouter.get('/app/v1/user/profile', validate([
-]), userAppAuthMiddleware(),
+retrieveRouter.get('/app/v1/user/profile',userAppAuthMiddleware(),
     wrapRequestHandler(retrieveProfile))
