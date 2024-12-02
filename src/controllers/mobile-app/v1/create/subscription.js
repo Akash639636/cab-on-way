@@ -19,7 +19,7 @@ const createSubscription = async (req, res) => {
             merchantUserId: 'MUID' + id,
             name,
             amount: 199 * 100,
-            redirectUrl: `https://becoming-newly-thrush.ngrok-free.app/verify-payment?mtxnId=${merchantTransactionId}`,
+            redirectUrl: `https://cab-on-way.onrender.com/verify-payment?mtxnId=${merchantTransactionId}`,
             redirectMode: 'REDIRECT',
             mobileNumber: mobile,
             paymentInstrument: {
