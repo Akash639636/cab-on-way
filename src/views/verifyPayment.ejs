@@ -143,6 +143,7 @@
 
             if (data.status == 'COMPLETED') {
                 document.querySelector('#successLottie').style.display = 'flex';
+                window.location.href = 'com.cabonway://payment-success';
             } else {
                 document.querySelector('#errorLottie').style.display = 'flex';
             }
