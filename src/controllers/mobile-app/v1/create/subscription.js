@@ -19,7 +19,7 @@ const createSubscription = async (req, res) => {
             merchantUserId: 'MUID' + id,
             name,
             amount: 199 * 100,
-            redirectUrl: `https://cab-on-way.onrender.com/verify-payment?mtxnId=${merchantTransactionId}`,
+            redirectUrl: `http://localhost:8080/verify-payment?mtxnId=${merchantTransactionId}`,
             redirectMode: 'REDIRECT',
             mobileNumber: mobile,
             paymentInstrument: {
@@ -62,6 +62,6 @@ const createSubscription = async (req, res) => {
 }
 
 
-createRouter.post('/app/v1/user/subscription',
+createRouter.get('/app/v1/user/subscription',
     userAppAuthMiddleware(),
     wrapRequestHandler(createSubscription))
