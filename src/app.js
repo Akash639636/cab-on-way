@@ -7,7 +7,7 @@ const cors = require('cors');
 app.use(cors({
     origin: [
         "http://localhost:4173",
-        "http://localhost:5500",
+        "https://cab-on-my-way.vercel.app",
         "https://cab-on-way-react-admin.onrender.com",
         "https://becoming-newly-thrush.ngrok-free.app"
     ]
