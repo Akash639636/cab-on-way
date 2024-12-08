@@ -15,8 +15,8 @@ const retrieve = async (req, res) => {
         const userSub = await UsersSubscription.findOne({where: {merchantTransactionId: mtxnId, paymentStatus: 'pending'}});
         if (!userSub) return res.status(422).json(error('Invalid Data'));
 
-        const verificationUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.MERCHANT_ID}/${mtxnId}`;
-        const checksum = crypto.createHash('sha256').update(`/pg/v1/status/${process.env.MERCHANT_ID}/${mtxnId}` + process.env.SALT_KEY).digest('hex') + "###" + process.env.SALT_INDEX;
+        const verificationUrl = `https://mercury-t2.phonepe.com/v3/transaction/${process.env.MERCHANT_ID}/${mtxnId}/status`;
+        const checksum = crypto.createHash('sha256').update(`/v3/transaction/${process.env.MERCHANT_ID}/${mtxnId}/status` + process.env.SALT_KEY).digest('hex') + "###" + process.env.SALT_INDEX;
 
         const options = {
             method: 'GET',
@@ -40,7 +40,8 @@ const retrieve = async (req, res) => {
             userSub.paymentStatus = 'success';
             userSub.save();
         }
-        return res.status(200).json(success('', {status: data.data.state}));
+        return res.status(200).json(success('', {status: data.data.paymentState}));
+        // return res.status(200).json(success('', {data}));
 
     } catch (e) {
         return res.status(500).json(error(e.message));

@@ -131,7 +131,7 @@
     console.log(JSON.stringify(query))
     const loader = document.querySelector('.loader');
 
-    fetch('https://cab-on-way.onrender.com/api/app/v1/user/payment-verification', {
+    fetch('http://localhost:8080/api/app/v1/user/payment-verification', {
         method: "post",
         body: JSON.stringify(query),
         headers: {
