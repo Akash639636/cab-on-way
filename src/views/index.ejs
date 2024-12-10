@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0px;
+            padding: 0;
+            position: relative;
+        }
+        a, h1 {
+            color: #ffffff;
+        }
+        p {
+            margin: 0;
+        }
+
+        #loader {
+            display: none;
+            margin: 20px auto;
+        }
+
+        #error-message {
+            color: red;
+            font-weight: bold;
+        }
+
+        .loader {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-block;
+            border-top: 3px solid #000000;
+            border-right: 3px solid transparent;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        .banner {
+            background: linear-gradient(#000000b0, #000000b0),
+            url("https://images.unsplash.com/photo-1513978246846-a03516f340e1?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            height: calc(100vh);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        footer{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="banner">
+    <div>
+        <h1><strong>CAB ON WAY</strong></h1>
+        <div id="loader">
+            <span class="loader"></span>
+        </div>
+        <p id="error-message"></p>
+
+    </div>
+
+    <footer>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/about-us">About Us</a>
+        <a href="/refund-policy">Refund Policy</a>
+        <a href="/terms-and-condition">Terms And Conditions</a>
+    </footer>
+</div>
+<script>
+    const apiToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyNSwibmFtZSI6ImNlcHF3YSIsIm1vYmlsZSI6Ijk5OTk5OTk5OTkiLCJlbWFpbCI6Iml2cGRwbiIsImdlbmRlciI6Ik5VTEwiLCJwcm9maWxlSW1hZ2UiOm51bGwsInBhc3N3b3JkIjoiJDJhJDEyJE55Q0t4Y2M0UThNNWhaRHQzTEcyNy5HQUs3Vmh6Zndlcm41SHdjczg0blRsWkhiQlUxR3h5IiwiaXNBY3RpdmUiOnRydWUsImlzVmVyaWZpZWQiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjQtMTAtMjlUMDU6MzU6MDIuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMTEtMTZUMDA6NDg6NTUuMDAwWiJ9LCJpYXQiOjE3MzMzODk5MzB9.JSqI2RLltN6ClbpWXkGLzyPVQhYhiZj8YcY76B99rGw"; // Replace with your dynamic token
+    const apiUrl = `https://cab-on-way.onrender.com/api/create/app/v1/user/subscription?token_id=${apiToken}`; // Replace with your dynamic API URL
+
+    const loader = document.getElementById("loader");
+    const errorMessage = document.getElementById("error-message");
+
+    async function makeApiCall() {
+        // Reset error message
+        errorMessage.textContent = "";
+
+        // Show loader
+        loader.style.display = "block";
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            // Simulate API delay for demonstration (optional)
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            if (response.ok) {
+                const result = await response.json();
+
+                const redirectUrl =
+                    result?.data?.instrumentResponse?.redirectInfo?.url;
+
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                } else {
+                    throw new Error("Redirect URL not found in the API response.");
+                }
+            } else {
+                throw new Error("API returned an error: " + response.status);
+            }
+        } catch (error) {
+            // Show error message in UI
+            errorMessage.textContent = error.message;
+        } finally {
+            // Hide loader
+            loader.style.display = "none";
+        }
+    }
+
+    // Call the API on page load
+    window.onload = makeApiCall;
+</script>
+</body>
+</html>
